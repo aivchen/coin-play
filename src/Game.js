@@ -36,7 +36,14 @@ export class Game extends React.Component {
   }
 
   handleBet (event) {
-    this.setState({ bet: event.target.value })
+    let val = event.target.value
+    if (!/^\d+$/.test(val)) {
+      return
+    }
+    val = +val
+    if (val >= 0) {
+      this.setState({ bet: +val })
+    }
   }
 
   addBet (val) {
@@ -73,6 +80,10 @@ export class Game extends React.Component {
   }
 
   play () {
+    if (this.state.bet === 0) {
+      this.log('Ставка должна быть больше нуля')
+      return
+    }
     const val = Math.random() > 0.4 ? +this.state.bet : -this.state.bet
 
     let playResult = 'Вы ничего не выиграли'
